@@ -15,4 +15,4 @@ TBC
 ## Contributor
 
 - [Che-Kuang Chu (ckchu2)](https://gitlab.engr.illinois.edu/ckchu2)
-- [William Lin (jhihwei2)](https://gitlab.engr.illinois.edu/jhihwei2)
+- [Jhih-Wei Lin (jhihwei2)](https://gitlab.engr.illinois.edu/jhihwei2)
