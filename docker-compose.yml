@@ -1,0 +1,30 @@
+version: "3"
+services:
+  m1:
+    container_name: m1
+    build: .
+    image: ds-grep
+    hostname: m1
+    volumes: # mount the current directory into the container at /app
+      - .:/app
+      - /app/bin
+  m2:
+    container_name: m2
+    build: .
+    image: ds-grep
+    hostname: m2
+  m3:
+    container_name: m3
+    build: .
+    image: ds-grep
+    hostname: m3
+  m4:
+    container_name: m4
+    build: .
+    image: ds-grep
+    hostname: m4
+  m5:
+    container_name: m5
+    build: .
+    image: ds-grep
+    hostname: m5

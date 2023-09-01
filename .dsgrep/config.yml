@@ -1,0 +1,11 @@
+machines:
+  - hostname: "m1"
+    port: "7122"
+  - hostname: "m2"
+    port: "7122"
+  - hostname: "m3"
+    port: "7122"
+  - hostname: "m4"
+    port: "7122"
+  - hostname: "m5"
+    port: "7122"

@@ -1,16 +1,16 @@
 build: build-client build-server
 
 build-client:
-	go build -o bin/client cmd/client/main.go
+	go build -o bin/ds-grep cmd/ds-grep/main.go
 
 build-server:
-	go build -o bin/server cmd/server/main.go
+	go build -o bin/ds-grep-server cmd/ds-grep-server/main.go
 
 run-client:
-	go run cmd/client/main.go
+	go run cmd/ds-grep/main.go $(ARGS)
 
 run-server:
-	go run cmd/server/main.go
+	go run cmd/ds-grep-server/main.go $(ARGS)
 
 clean:
 	rm -rf bin
