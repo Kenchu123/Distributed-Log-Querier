@@ -80,10 +80,31 @@ func handleConnection(conn net.Conn, handler *grep.Handler) {
 	}
 	// set write deadline to now + 10 seconds
 	conn.SetWriteDeadline(time.Now().Add(constant.WRITE_TIMEOUT))
-	if _, err = conn.Write([]byte(result)); err != nil {
+	if _, err = send(conn, result); err != nil {
 		logrus.Errorf("failed to send message: %v\n", err)
 		return
 	}
+}
+
+// send sends a message to the client connection
+func send(conn net.Conn, msg string) (int, error) {
+	var sent int
+	for {
+		if len(msg) == 0 {
+			break
+		}
+		chunk := []byte(msg)
+		if len(chunk) > constant.CHUNK_SIZE {
+			chunk = chunk[:constant.CHUNK_SIZE]
+		}
+		n, err := conn.Write(chunk)
+		if err != nil {
+			return sent, fmt.Errorf("failed to write to connection: %w", err)
+		}
+		sent += n
+		msg = msg[n:]
+	}
+	return sent, nil
 }
 
 // receive receives a message from the client connection

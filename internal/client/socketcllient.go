@@ -41,10 +41,31 @@ func (c *SocketClient) Close() {
 func (c *SocketClient) Send(msg string) {
 	// set write deadline to now + constant.WRITE_TIMEOUT
 	c.conn.SetWriteDeadline(time.Now().Add(constant.WRITE_TIMEOUT))
-	_, err := c.conn.Write([]byte(msg))
+	_, err := c.send(msg)
 	if err != nil {
 		logrus.Errorf("failed to send message: %v\n", err)
 	}
+}
+
+// Send sends a message to the server
+func (c *SocketClient) send(msg string) (int, error) {
+	var sent int
+	for {
+		if len(msg) == 0 {
+			break
+		}
+		chunk := []byte(msg)
+		if len(chunk) > constant.CHUNK_SIZE {
+			chunk = chunk[:constant.CHUNK_SIZE]
+		}
+		n, err := c.conn.Write(chunk)
+		if err != nil {
+			return sent, fmt.Errorf("failed to write to connection: %w", err)
+		}
+		sent += n
+		msg = msg[n:]
+	}
+	return sent, nil
 }
 
 // Receive receives a message from the server
