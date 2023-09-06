@@ -68,7 +68,7 @@ docker-compose up -d [--build]
 
 # On another session
 docker exec -it m1 /bin/ash
-$ ./bin/ds-grep [args]
+./bin/ds-grep [args]
 
 # Close
 docker-compose down

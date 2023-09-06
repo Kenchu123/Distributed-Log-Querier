@@ -1,68 +1,82 @@
 package client
 
 import (
-	"bytes"
-	"errors"
 	"fmt"
-	"io"
-	"net"
-	"time"
+	"strings"
+	"sync"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.engr.illinois.edu/ckchu2/cs425-mp1/internal/constant"
+	"gitlab.engr.illinois.edu/ckchu2/cs425-mp1/internal/config"
 )
 
-// Client handles socket client
 type Client struct {
-	conn net.Conn
+	machines []config.Machine
 }
 
-// New creates a new socket client
-func New(hostname string, port string) (*Client, error) {
-	d := net.Dialer{
-		Timeout: constant.CONNECTION_TIMEOUT,
-	}
-	client, err := d.Dial("tcp", hostname+":"+port)
+type Result struct {
+	Message string
+	Err     error
+}
 
+// New creates a new client
+func New(conf *config.Config, machineRegex string) (*Client, error) {
+	machines, err := conf.FilterMachines(machineRegex)
 	if err != nil {
-		return nil, fmt.Errorf("failed to connect to %s:%s: %w", hostname, port, err)
+		return nil, err
 	}
 	return &Client{
-		conn: client,
+		machines: machines,
 	}, nil
 }
 
-// Close closes the socket client
-func (c *Client) Close() {
-	c.conn.Close()
+func (c *Client) Run(args []string) {
+	var wg = &sync.WaitGroup{}
+	result := make(chan Result)
+	for _, machine := range c.machines {
+		wg.Add(1)
+		go func(machine config.Machine) {
+			response, err := sendRequest(machine.Hostname, machine.Port, strings.Join(args, " "))
+			if err != nil {
+				result <- Result{
+					Message: "",
+					Err:     err,
+				}
+				return
+			}
+			result <- Result{
+				Message: response,
+				Err:     nil,
+			}
+		}(machine)
+	}
+
+	go func() {
+		for r := range result {
+			// TODO: handle response
+			if r.Err != nil {
+				logrus.Error(r.Err)
+			} else {
+				logrus.Printf("%+v\n", r)
+			}
+			wg.Done()
+		}
+	}()
+	wg.Wait()
 }
 
-// Send sends a message to the server
-func (c *Client) Send(msg string) {
-	// set write deadline to now + constant.WRITE_TIMEOUT
-	c.conn.SetWriteDeadline(time.Now().Add(constant.WRITE_TIMEOUT))
-	_, err := c.conn.Write([]byte(msg))
+func sendRequest(Hostname string, port string, msg string) (string, error) {
+	if len(msg) == 0 {
+		return "", fmt.Errorf("empty message")
+	}
+	socketClient, err := NewSocketClient(Hostname, port)
 	if err != nil {
-		logrus.Errorf("failed to send message: %v\n", err)
+		return "", err
 	}
-}
-
-// Receive receives a message from the server
-func (c *Client) Receive() (int, []byte, error) {
-	var received int
-	buffer := bytes.NewBuffer(nil)
-	for {
-		chunk := make([]byte, constant.CHUNK_SIZE)
-		read, err := c.conn.Read(chunk)
-		if err != nil && !errors.Is(err, io.EOF) {
-			return received, buffer.Bytes(), fmt.Errorf("failed to read from connection: %w", err)
-		}
-		received += read
-		buffer.Write(chunk[:read])
-
-		if read == 0 || read < constant.CHUNK_SIZE {
-			break
-		}
+	defer socketClient.Close()
+	socketClient.Send(msg)
+	_, response, err := socketClient.Receive()
+	if err != nil {
+		return "", err
 	}
-	return received, buffer.Bytes(), nil
+	return string(response), nil
 }

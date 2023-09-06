@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
-	"sync"
 
 	"github.com/jessevdk/go-flags"
 	"github.com/sirupsen/logrus"
@@ -40,43 +38,11 @@ func main() {
 		logrus.Fatal(err)
 	}
 
-	// Filter machines based on regex
-	machines, err := conf.FilterMachines(opts.MachineRegex)
+	// Create client
+	client, err := client.New(conf, opts.MachineRegex)
 	if err != nil {
 		logrus.Fatal(err)
 	}
-
-	// Send request to each machine
-	var wg = &sync.WaitGroup{}
-	for _, machine := range machines {
-		wg.Add(1)
-		go func(machine config.Machine) {
-			defer wg.Done()
-			response, err := sendRequest(machine.Hostname, machine.Port, strings.Join(args, " "))
-			if err != nil {
-				logrus.Errorf("failed to send request to %s:%s: %v\n", machine.Hostname, machine.Port, err)
-				return
-			}
-			logrus.Printf("Response from %s:%s:\n%s\n", machine.Hostname, machine.Port, response)
-		}(machine)
-	}
-	wg.Wait()
 	// TODO: handle response
-}
-
-func sendRequest(Hostname string, port string, msg string) (string, error) {
-	if len(msg) == 0 {
-		return "", fmt.Errorf("empty message")
-	}
-	client, err := client.New(Hostname, port)
-	if err != nil {
-		return "", err
-	}
-	defer client.Close()
-	client.Send(msg)
-	_, response, err := client.Receive()
-	if err != nil {
-		return "", err
-	}
-	return string(response), nil
+	client.Run(args)
 }
