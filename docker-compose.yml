@@ -1,0 +1,82 @@
+version: "3"
+services:
+  dev:
+    container_name: dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: ds-grep-dev
+    hostname: dev
+    volumes: # mount the current directory into the container at /app for development
+      - .:/app
+      - /app/bin
+  m1:
+    container_name: m1
+    build: .
+    image: ds-grep
+    hostname: fa23-cs425-8701.cs.illinois.edu
+    volumes:
+      - ./logs/vm1.log:/app/logs/machine.i.log
+  m2:
+    container_name: m2
+    build: .
+    image: ds-grep
+    hostname: fa23-cs425-8702.cs.illinois.edu
+    volumes:
+      - ./logs/vm2.log:/app/logs/machine.i.log
+  m3:
+    container_name: m3
+    build: .
+    image: ds-grep
+    hostname: fa23-cs425-8703.cs.illinois.edu
+    volumes:
+      - ./logs/vm3.log:/app/logs/machine.i.log
+  m4:
+    container_name: m4
+    build: .
+    image: ds-grep
+    hostname: fa23-cs425-8704.cs.illinois.edu
+    volumes:
+      - ./logs/vm4.log:/app/logs/machine.i.log
+  m5:
+    container_name: m5
+    build: .
+    image: ds-grep
+    hostname: fa23-cs425-8705.cs.illinois.edu
+    volumes:
+      - ./logs/vm5.log:/app/logs/machine.i.log
+  m6:
+    container_name: m6
+    build: .
+    image: ds-grep
+    hostname: fa23-cs425-8706.cs.illinois.edu
+    volumes:
+      - ./logs/vm6.log:/app/logs/machine.i.log
+  m7:
+    container_name: m7
+    build: .
+    image: ds-grep
+    hostname: fa23-cs425-8707.cs.illinois.edu
+    volumes:
+      - ./logs/vm7.log:/app/logs/machine.i.log
+  m8:
+    container_name: m8
+    build: .
+    image: ds-grep
+    hostname: fa23-cs425-8708.cs.illinois.edu
+    volumes:
+      - ./logs/vm8.log:/app/logs/machine.i.log
+  m9:
+    container_name: m9
+    build: .
+    image: ds-grep
+    hostname: fa23-cs425-8709.cs.illinois.edu
+    volumes:
+      - ./logs/vm9.log:/app/logs/machine.i.log
+  m10:
+    container_name: m10
+    build: .
+    image: ds-grep
+    hostname: fa23-cs425-8710.cs.illinois.edu
+    volumes:
+      - ./logs/vm10.log:/app/logs/machine.i.log
