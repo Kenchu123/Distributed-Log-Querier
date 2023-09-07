@@ -60,21 +60,70 @@ machines:
 
 ## Testing
 
-### Set up environment with Docker Compose
+### Docker
+
+#### Set test logs
+
+You should set logs/vm\*.log on the code repo root directory
 
 ```bash
-# On one session
-docker-compose up -d [--build]
-
-# On another session
-docker exec -it m1 /bin/ash
-./bin/ds-grep [args]
-
-# Close
-docker-compose down
+logs
+├── vm1.log
+├── vm2.log
+├── vm3.log
+├── vm4.log
+├── vm5.log
+├── vm6.log
+├── vm7.log
+├── vm8.log
+├── vm9.log
+└── vm10.log
 ```
 
-TBD
+#### Build and Run containers
+
+```bash
+docker compose up -d [--build]
+```
+
+#### Run tests
+
+```bash
+# Enter dev container
+docker exec -it dev /bin/ash
+
+# Run tests
+$ go test [-v] [-count=1] ./...
+```
+
+#### Useful commands
+
+```bash
+# See logs
+docker compose logs -f [m[1-10]]
+
+# Close
+docker compose down
+```
+
+### VMs
+
+#### Prerequisites
+
+1. Clone this repo to each VM.
+2. Build this project on each VM.
+3. Start all `ds-grep-server` on each VM.
+4. Set `logs/machine.i.log` on each VM.
+
+#### Run tests
+
+```bash
+# Enter VM
+ssh [netid]@[vm-hostname]
+
+# Run tests
+$ go test [-v] [-count=1] ./...
+```
 
 ## Contributor
 
