@@ -45,5 +45,5 @@ func main() {
 	}
 	// TODO: handle response
 	result := client.Run(args)
-	fmt.Println(result)
+	fmt.Print(result)
 }

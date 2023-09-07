@@ -22,7 +22,7 @@ func TestBasic(t *testing.T) {
 		t.Fatal(err)
 	}
 	// build args
-	args := []string{"PUT", "logs/machine.i.log"}
+	args := []string{"-c", "PUT", "logs/machine.i.log"}
 	// TODO: test response
 	result := client.Run(args)
 	t.Log(result)

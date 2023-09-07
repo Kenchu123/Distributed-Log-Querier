@@ -14,8 +14,9 @@ type Client struct {
 }
 
 type Result struct {
-	Message string
-	Err     error
+	Hostname string
+	Message  string
+	Err      error
 }
 
 // New creates a new client
@@ -39,14 +40,16 @@ func (c *Client) Run(args []string) string {
 			response, err := sendRequest(machine.Hostname, machine.Port, strings.Join(args, " "))
 			if err != nil {
 				result <- Result{
-					Message: "",
-					Err:     err,
+					Hostname: machine.Hostname,
+					Message:  "",
+					Err:      err,
 				}
 				return
 			}
 			result <- Result{
-				Message: response,
-				Err:     nil,
+				Hostname: machine.Hostname,
+				Message:  response,
+				Err:      nil,
 			}
 		}(machine)
 	}
@@ -63,7 +66,7 @@ func (c *Client) Run(args []string) string {
 		if r.Err != nil {
 			logrus.Error(r.Err)
 		} else {
-			re += r.Message
+			re += fmt.Sprintf("%s:%s", r.Hostname, r.Message)
 		}
 	}
 	return re
