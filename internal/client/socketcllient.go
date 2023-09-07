@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net"
-	"time"
 
 	"github.com/sirupsen/logrus"
 	"gitlab.engr.illinois.edu/ckchu2/cs425-mp1/internal/constant"
@@ -39,8 +38,6 @@ func (c *SocketClient) Close() {
 
 // Send sends a message to the server
 func (c *SocketClient) Send(msg string) {
-	// set write deadline to now + constant.WRITE_TIMEOUT
-	c.conn.SetWriteDeadline(time.Now().Add(constant.WRITE_TIMEOUT))
 	_, err := c.send(msg)
 	if err != nil {
 		logrus.Errorf("failed to send message: %v\n", err)

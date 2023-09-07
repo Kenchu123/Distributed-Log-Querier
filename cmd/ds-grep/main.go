@@ -44,5 +44,6 @@ func main() {
 		logrus.Fatal(err)
 	}
 	// TODO: handle response
-	client.Run(args)
+	result := client.Run(args)
+	fmt.Println(result)
 }

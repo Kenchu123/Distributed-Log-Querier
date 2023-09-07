@@ -6,7 +6,6 @@ import (
 	"net"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/sirupsen/logrus"
 	"gitlab.engr.illinois.edu/ckchu2/cs425-mp1/internal/config"
@@ -79,7 +78,6 @@ func handleConnection(conn net.Conn, handler *grep.Handler) {
 		return
 	}
 	// set write deadline to now + 10 seconds
-	conn.SetWriteDeadline(time.Now().Add(constant.WRITE_TIMEOUT))
 	if _, err = send(conn, result); err != nil {
 		logrus.Errorf("failed to send message: %v\n", err)
 		return

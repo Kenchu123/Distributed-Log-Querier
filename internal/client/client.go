@@ -29,12 +29,13 @@ func New(conf *config.Config, machineRegex string) (*Client, error) {
 	}, nil
 }
 
-func (c *Client) Run(args []string) {
+func (c *Client) Run(args []string) string {
 	var wg = &sync.WaitGroup{}
 	result := make(chan Result)
 	for _, machine := range c.machines {
 		wg.Add(1)
 		go func(machine config.Machine) {
+			defer wg.Done()
 			response, err := sendRequest(machine.Hostname, machine.Port, strings.Join(args, " "))
 			if err != nil {
 				result <- Result{
@@ -51,17 +52,21 @@ func (c *Client) Run(args []string) {
 	}
 
 	go func() {
-		for r := range result {
-			// TODO: handle response
-			if r.Err != nil {
-				logrus.Error(r.Err)
-			} else {
-				logrus.Printf("%+v\n", r)
-			}
-			wg.Done()
-		}
+		wg.Wait()
+		close(result)
 	}()
-	wg.Wait()
+
+	// combine all the results
+	// TODO: handle error
+	re := ""
+	for r := range result {
+		if r.Err != nil {
+			logrus.Error(r.Err)
+		} else {
+			re += r.Message
+		}
+	}
+	return re
 }
 
 func sendRequest(Hostname string, port string, msg string) (string, error) {
