@@ -19,3 +19,5 @@ machines:
     port: "7122"
   - hostname: "fa23-cs425-8710.cs.illinois.edu"
     port: "7122"
+  - hostname: "failure machine"
+    port: "7122"

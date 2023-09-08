@@ -1,4 +1,0 @@
-machines:
-  - hostname: "dev" # hostname for dev machine
-    port: "7122"
-

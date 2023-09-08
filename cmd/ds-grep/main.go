@@ -43,7 +43,10 @@ func main() {
 	if err != nil {
 		logrus.Fatal(err)
 	}
-	// TODO: handle response
-	result := client.Run(args)
-	fmt.Print(result)
+	results := client.Run(args)
+
+	// Print result to terminal
+	for hostname, result := range results {
+		fmt.Printf("%s:%s", hostname, result.Message)
+	}
 }

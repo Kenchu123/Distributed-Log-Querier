@@ -30,7 +30,7 @@ func New(conf *config.Config, machineRegex string) (*Client, error) {
 	}, nil
 }
 
-func (c *Client) Run(args []string) string {
+func (c *Client) Run(args []string) map[string]Result {
 	var wg = &sync.WaitGroup{}
 	result := make(chan Result)
 	for _, machine := range c.machines {
@@ -61,15 +61,15 @@ func (c *Client) Run(args []string) string {
 
 	// combine all the results
 	// TODO: handle error
-	re := ""
+	var results map[string]Result = map[string]Result{}
 	for r := range result {
 		if r.Err != nil {
 			logrus.Error(r.Err)
 		} else {
-			re += fmt.Sprintf("%s:%s", r.Hostname, r.Message)
+			results[r.Hostname] = r
 		}
 	}
-	return re
+	return results
 }
 
 func sendRequest(Hostname string, port string, msg string) (string, error) {

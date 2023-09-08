@@ -17,6 +17,9 @@ services:
     hostname: fa23-cs425-8701.cs.illinois.edu
     volumes:
       - ./logs/vm1.log:/app/logs/machine.i.log
+      - ./test/basic/logs/vm1.log:/app/test/basic/logs/machine.i.log
+      - ./test/fault/logs/vm1.log:/app/test/fault/logs/machine.i.log
+      - ./test/large/logs/vm1.log:/app/test/large/logs/machine.i.log
   m2:
     container_name: m2
     build: .
@@ -24,6 +27,8 @@ services:
     hostname: fa23-cs425-8702.cs.illinois.edu
     volumes:
       - ./logs/vm2.log:/app/logs/machine.i.log
+      - ./test/basic/logs/vm2.log:/app/test/basic/logs/machine.i.log
+      - ./test/large/logs/vm2.log:/app/test/large/logs/machine.i.log
   m3:
     container_name: m3
     build: .
@@ -31,6 +36,7 @@ services:
     hostname: fa23-cs425-8703.cs.illinois.edu
     volumes:
       - ./logs/vm3.log:/app/logs/machine.i.log
+      - ./test/basic/logs/vm3.log:/app/test/basic/logs/machine.i.log
   m4:
     container_name: m4
     build: .
@@ -38,6 +44,7 @@ services:
     hostname: fa23-cs425-8704.cs.illinois.edu
     volumes:
       - ./logs/vm4.log:/app/logs/machine.i.log
+      - ./test/basic/logs/vm4.log:/app/test/basic/logs/machine.i.log
   m5:
     container_name: m5
     build: .
@@ -45,6 +52,7 @@ services:
     hostname: fa23-cs425-8705.cs.illinois.edu
     volumes:
       - ./logs/vm5.log:/app/logs/machine.i.log
+      - ./test/basic/logs/vm5.log:/app/test/basic/logs/machine.i.log
   m6:
     container_name: m6
     build: .
