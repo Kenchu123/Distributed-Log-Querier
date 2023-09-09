@@ -1,6 +1,4 @@
 machines:
-  - hostname: "dev" # hostname for dev machine
-    port: "7122"
   - hostname: "fa23-cs425-8701.cs.illinois.edu"
     port: "7122"
   - hostname: "fa23-cs425-8702.cs.illinois.edu"
