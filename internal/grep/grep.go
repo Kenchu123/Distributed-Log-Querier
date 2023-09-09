@@ -26,7 +26,14 @@ func (h *Handler) Handle(args []string) (string, error) {
 	cmd.Stderr = &stdErr
 	err := cmd.Run()
 	if err != nil {
-		return "", fmt.Errorf("failed to execute grep: %w\n%s", err, stdErr.String())
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			if exitErr.ExitCode() == 1 {
+				// ignore exit status 1
+				logrus.Info("grep returned exit status 1, no match found")
+			} else {
+				return "", fmt.Errorf("failed to execute grep: %w\n%s", err, stdErr.String())
+			}
+		}
 	}
 	return stdOut.String(), nil
 }

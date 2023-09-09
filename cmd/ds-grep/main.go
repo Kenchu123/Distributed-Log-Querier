@@ -43,6 +43,6 @@ func main() {
 
 	// Print result to terminal
 	for hostname, result := range results {
-		fmt.Printf("%s:%s", hostname, result.Message)
+		fmt.Printf("%s:%s\n", hostname, result.Message)
 	}
 }
