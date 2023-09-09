@@ -64,22 +64,6 @@ machines:
 
 #### Set test logs
 
-You should set logs/vm\*.log on the code repo root directory
-
-```bash
-logs
-├── vm1.log
-├── vm2.log
-├── vm3.log
-├── vm4.log
-├── vm5.log
-├── vm6.log
-├── vm7.log
-├── vm8.log
-├── vm9.log
-└── vm10.log
-```
-
 #### Build and Run containers
 
 ```bash
