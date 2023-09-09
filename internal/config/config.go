@@ -9,8 +9,7 @@ import (
 
 // Config is the configuration for the servers
 type Config struct {
-	Machines   []Machine `yaml:"machines"`
-	MachineMap map[string]Machine
+	Machines []Machine `yaml:"machines"`
 }
 
 // Machine is the configuration for a single server
@@ -29,12 +28,6 @@ func New(path string) (*Config, error) {
 	err = yaml.Unmarshal(data, config)
 	if err != nil {
 		return nil, err
-	}
-
-	// create a map for fast lookup
-	config.MachineMap = make(map[string]Machine)
-	for _, machine := range config.Machines {
-		config.MachineMap[machine.Hostname] = machine
 	}
 	return config, nil
 }

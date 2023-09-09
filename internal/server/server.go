@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.engr.illinois.edu/ckchu2/cs425-mp1/internal/config"
 	"gitlab.engr.illinois.edu/ckchu2/cs425-mp1/internal/constant"
 	"gitlab.engr.illinois.edu/ckchu2/cs425-mp1/internal/grep"
 )
@@ -19,19 +18,16 @@ type Server struct {
 }
 
 // New creates a new server
-func New(conf *config.Config) (*Server, error) {
+func New(port string) (*Server, error) {
 	hostName, err := os.Hostname()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get hostname: %w", err)
 	}
-	if _, ok := conf.MachineMap[hostName]; !ok {
-		return nil, fmt.Errorf("hostname %s not found in config", hostName)
-	}
-	server, err := net.Listen("tcp", hostName+":"+conf.MachineMap[hostName].Port)
+	server, err := net.Listen("tcp", hostName+":"+port)
 	if err != nil {
-		return nil, fmt.Errorf("failed to listen on %s:%s: %w", hostName, conf.MachineMap[hostName].Port, err)
+		return nil, fmt.Errorf("failed to listen on %s:%s: %w", hostName, port, err)
 	}
-	logrus.Printf("Listening on %s:%s\n", hostName, conf.MachineMap[hostName].Port)
+	logrus.Printf("Listening on %s:%s\n", hostName, port)
 	return &Server{
 		server: server,
 	}, nil
