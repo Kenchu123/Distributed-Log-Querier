@@ -9,15 +9,19 @@ import (
 )
 
 func TestParallelClient(t *testing.T) {
-	conf, err := config.New("./config.yml")
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "01",
+		MachineILog:       true,
+		MachineILogFolder: "test/basic/logs",
+	}
+	conf, err := config.New(opts.ConfigPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	machineRegex := "01"
-
 	// test CLIENT_NUM client
 	CLIENT_NUM := 10
-	args := []string{"-c", "PUT", "test/basic/logs/machine.i.log"}
+	args := []string{"-c", "PUT"}
 
 	// Build expected
 	expected := []map[string]client.Result{}
@@ -33,7 +37,7 @@ func TestParallelClient(t *testing.T) {
 	// Start testing
 	testClients := []*client.Client{}
 	for i := 0; i < CLIENT_NUM; i++ {
-		testClient, err := client.New(conf, machineRegex)
+		testClient, err := client.New(conf, opts)
 		if err != nil {
 			t.Fatal(err)
 		}

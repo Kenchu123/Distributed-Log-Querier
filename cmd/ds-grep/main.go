@@ -13,19 +13,15 @@ import (
 )
 
 func main() {
-	var opts struct {
-		ConfigPath   string `long:"config" description:"path to config file"`
-		MachineRegex string `long:"machine" description:"regex to match machine names" default:".*"`
-		Help         bool   `short:"h" long:"help" description:"show this help message"`
-	}
+	var opts client.Options
 	args, err := flags.NewParser(&opts, flags.IgnoreUnknown).ParseArgs(os.Args[1:])
 	if err != nil {
 		logrus.Fatal(err)
 	}
 
-	if opts.Help {
+	if len(args) == 0 || opts.Help {
 		fmt.Println(grep.Help())
-		return
+		os.Exit(0)
 	}
 
 	if len(opts.ConfigPath) == 0 {
@@ -39,7 +35,7 @@ func main() {
 	}
 
 	// Create client
-	client, err := client.New(conf, opts.MachineRegex)
+	client, err := client.New(conf, &opts)
 	if err != nil {
 		logrus.Fatal(err)
 	}

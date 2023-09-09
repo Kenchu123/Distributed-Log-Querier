@@ -8,6 +8,8 @@ Example: ds-grep -i 'hello world' menu.h main.c
 Distributed grep options:
     --config=PATH  path to config file (default ".dsgrep/config.yml")
     --machine=REGEX  regex to match machine names
+    --machine-ilog  append machine.$i.log to grep file path
+    --machine-ilog-folder=PATH  folder to store machine.$i.log (default "logs")
 
 Pattern selection and interpretation:
     -E, --extended-regexp     PATTERN is an extended regular expression

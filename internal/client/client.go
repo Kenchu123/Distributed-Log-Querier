@@ -11,6 +11,15 @@ import (
 
 type Client struct {
 	machines []config.Machine
+	options  *Options
+}
+
+type Options struct {
+	ConfigPath        string `long:"config" description:"path to config file"`
+	MachineRegex      string `long:"machine" description:"regex to match machine names" default:".*"`
+	MachineILog       bool   `long:"machine-ilog" description:"append machine.$i.log to grep file path"`
+	MachineILogFolder string `long:"machine-ilog-folder" description:"folder to store machine.$i.log" default:"logs"`
+	Help              bool   `short:"h" long:"help" description:"show this help message"`
 }
 
 type Result struct {
@@ -20,16 +29,18 @@ type Result struct {
 }
 
 // New creates a new client
-func New(conf *config.Config, machineRegex string) (*Client, error) {
-	machines, err := conf.FilterMachines(machineRegex)
+func New(conf *config.Config, opts *Options) (*Client, error) {
+	machines, err := conf.FilterMachines(opts.MachineRegex)
 	if err != nil {
 		return nil, err
 	}
 	return &Client{
 		machines: machines,
+		options:  opts,
 	}, nil
 }
 
+// Run runs the client
 func (c *Client) Run(args []string) map[string]Result {
 	var wg = &sync.WaitGroup{}
 	result := make(chan Result)
@@ -37,7 +48,7 @@ func (c *Client) Run(args []string) map[string]Result {
 		wg.Add(1)
 		go func(machine config.Machine) {
 			defer wg.Done()
-			response, err := sendRequest(machine.Hostname, machine.Port, strings.Join(args, " "))
+			response, err := sendRequest(machine.Hostname, machine.Port, buildArgs(args, c.options, machine))
 			if err != nil {
 				result <- Result{
 					Hostname: machine.Hostname,
@@ -70,6 +81,13 @@ func (c *Client) Run(args []string) map[string]Result {
 		}
 	}
 	return results
+}
+
+func buildArgs(args []string, opts *Options, machine config.Machine) string {
+	if opts.MachineILog {
+		args = append(args, fmt.Sprintf("%s/machine.%s.log", opts.MachineILogFolder, machine.ID))
+	}
+	return strings.Join(args, " ")
 }
 
 func sendRequest(Hostname string, port string, msg string) (string, error) {

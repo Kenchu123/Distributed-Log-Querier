@@ -13,11 +13,16 @@ func isEqual(a map[string]client.Result, b map[string]client.Result) bool {
 }
 
 func TestLargeFrequent(t *testing.T) {
-	conf, err := config.New("./config.yml")
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "0[1-2]",
+		MachineILog:       true,
+		MachineILogFolder: "test/large/logs",
+	}
+	conf, err := config.New(opts.ConfigPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	machineRegex := "0[1-2]"
 	expected := map[string]client.Result{
 		"fa23-cs425-8701.cs.illinois.edu": {
 			Hostname: "fa23-cs425-8701.cs.illinois.edu",
@@ -29,11 +34,11 @@ func TestLargeFrequent(t *testing.T) {
 		},
 	}
 
-	testClient, err := client.New(conf, machineRegex)
+	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
-	args := []string{"-c", "PUT", "test/large/logs/machine.i.log"}
+	args := []string{"-c", "PUT"}
 	output := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
@@ -42,11 +47,16 @@ func TestLargeFrequent(t *testing.T) {
 }
 
 func TestLargeInfrequent(t *testing.T) {
-	conf, err := config.New("./config.yml")
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "0[1-2]",
+		MachineILog:       true,
+		MachineILogFolder: "test/large/logs",
+	}
+	conf, err := config.New(opts.ConfigPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	machineRegex := "0[1-2]"
 	expected := map[string]client.Result{
 		"fa23-cs425-8701.cs.illinois.edu": {
 			Hostname: "fa23-cs425-8701.cs.illinois.edu",
@@ -58,11 +68,11 @@ func TestLargeInfrequent(t *testing.T) {
 		},
 	}
 
-	testClient, err := client.New(conf, machineRegex)
+	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
-	args := []string{"-c", "iPod", "test/large/logs/machine.i.log"}
+	args := []string{"-c", "iPod"}
 	output := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
@@ -71,11 +81,16 @@ func TestLargeInfrequent(t *testing.T) {
 }
 
 func TestLargeRegex(t *testing.T) {
-	conf, err := config.New("./config.yml")
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "0[1-2]",
+		MachineILog:       true,
+		MachineILogFolder: "test/large/logs",
+	}
+	conf, err := config.New(opts.ConfigPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	machineRegex := "0[1-2]"
 	expected := map[string]client.Result{
 		"fa23-cs425-8701.cs.illinois.edu": {
 			Hostname: "fa23-cs425-8701.cs.illinois.edu",
@@ -87,11 +102,11 @@ func TestLargeRegex(t *testing.T) {
 		},
 	}
 
-	testClient, err := client.New(conf, machineRegex)
+	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
-	args := []string{"-c", "[I-J]", "test/large/logs/machine.i.log"}
+	args := []string{"-c", "[I-J]"}
 	output := testClient.Run(args)
 
 	if isEqual(output, expected) == false {

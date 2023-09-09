@@ -13,11 +13,17 @@ func isEqual(a map[string]client.Result, b map[string]client.Result) bool {
 }
 
 func TestOneMachine(t *testing.T) {
-	conf, err := config.New("./config.yml")
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "01",
+		MachineILog:       true,
+		MachineILogFolder: "test/basic/logs",
+	}
+
+	conf, err := config.New(opts.ConfigPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	machineRegex := "01"
 	expected := map[string]client.Result{
 		"fa23-cs425-8701.cs.illinois.edu": {
 			Hostname: "fa23-cs425-8701.cs.illinois.edu",
@@ -25,11 +31,11 @@ func TestOneMachine(t *testing.T) {
 		},
 	}
 
-	testClient, err := client.New(conf, machineRegex)
+	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
-	args := []string{"-c", "PUT", "test/basic/logs/machine.i.log"}
+	args := []string{"-c", "PUT"}
 	output := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
@@ -38,11 +44,17 @@ func TestOneMachine(t *testing.T) {
 }
 
 func TestMachinesFrequent(t *testing.T) {
-	conf, err := config.New("./config.yml")
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "0[1-5]",
+		MachineILog:       true,
+		MachineILogFolder: "test/basic/logs",
+	}
+
+	conf, err := config.New(opts.ConfigPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	machineRegex := "0[1-5]"
 	expected := map[string]client.Result{
 		"fa23-cs425-8701.cs.illinois.edu": {
 			Hostname: "fa23-cs425-8701.cs.illinois.edu",
@@ -66,11 +78,11 @@ func TestMachinesFrequent(t *testing.T) {
 		},
 	}
 
-	testClient, err := client.New(conf, machineRegex)
+	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
-	args := []string{"-c", "PUT", "test/basic/logs/machine.i.log"}
+	args := []string{"-c", "PUT"}
 	output := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
@@ -79,11 +91,16 @@ func TestMachinesFrequent(t *testing.T) {
 }
 
 func TestMachinesInfrequent(t *testing.T) {
-	conf, err := config.New("./config.yml")
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "0[1-5]",
+		MachineILog:       true,
+		MachineILogFolder: "test/basic/logs",
+	}
+	conf, err := config.New(opts.ConfigPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	machineRegex := "0[1-5]"
 	expected := map[string]client.Result{
 		"fa23-cs425-8701.cs.illinois.edu": {
 			Hostname: "fa23-cs425-8701.cs.illinois.edu",
@@ -107,11 +124,11 @@ func TestMachinesInfrequent(t *testing.T) {
 		},
 	}
 
-	testClient, err := client.New(conf, machineRegex)
+	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
-	args := []string{"-c", "iPod", "test/basic/logs/machine.i.log"}
+	args := []string{"-c", "iPod"}
 	output := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
@@ -120,11 +137,16 @@ func TestMachinesInfrequent(t *testing.T) {
 }
 
 func TestMachinesRegex(t *testing.T) {
-	conf, err := config.New("./config.yml")
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "0[1-5]",
+		MachineILog:       true,
+		MachineILogFolder: "test/basic/logs",
+	}
+	conf, err := config.New(opts.ConfigPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	machineRegex := "0[1-5]"
 	expected := map[string]client.Result{
 		"fa23-cs425-8701.cs.illinois.edu": {
 			Hostname: "fa23-cs425-8701.cs.illinois.edu",
@@ -148,11 +170,11 @@ func TestMachinesRegex(t *testing.T) {
 		},
 	}
 
-	testClient, err := client.New(conf, machineRegex)
+	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
-	args := []string{"-c", "[I-J]", "test/basic/logs/machine.i.log"}
+	args := []string{"-c", "[I-J]"}
 	output := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
