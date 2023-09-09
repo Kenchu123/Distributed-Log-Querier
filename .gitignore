@@ -1,2 +1,6 @@
 bin
 logs
+.DS_Store
+!/test/basic/logs
+!/test/fault/logs
+!/test/large/logs
