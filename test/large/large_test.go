@@ -12,7 +12,6 @@ func isEqual(a map[string]client.Result, b map[string]client.Result) bool {
 	return reflect.DeepEqual(a, b)
 }
 
-
 func TestLargeFrequent(t *testing.T) {
 	conf, err := config.New("./config.yml")
 	if err != nil {
@@ -99,4 +98,3 @@ func TestLargeRegex(t *testing.T) {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
 	}
 }
-

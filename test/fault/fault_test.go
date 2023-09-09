@@ -56,4 +56,3 @@ func TestOnlyNoneExistingMachine(t *testing.T) {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
 	}
 }
-

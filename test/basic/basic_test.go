@@ -159,10 +159,3 @@ func TestMachinesRegex(t *testing.T) {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
 	}
 }
-// Tests
-// 1. TestOneMachine (V)
-// 2. TestMachines (V)
-// 3. Test Grep command argument ... xN (https://piazza.com/class/ll3vjcrbvnt28a/post/143)
-// 3. (fault-tolerant) TestNonExistingMachine (V)
-// 4. TestParallelClient (V)
-// 5. TestLargeFile, (Two Machine)

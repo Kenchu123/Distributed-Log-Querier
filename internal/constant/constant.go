@@ -3,7 +3,6 @@ package constant
 import "time"
 
 var CONFIG_PATH string = ".dsgrep/config.yml"
-var CONFIG_TEST string = "config.yml"
 
 // socket constants
 var BUFFER_SIZE int = 16777216
