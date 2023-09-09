@@ -13,11 +13,16 @@ func isEqual(a map[string]client.Result, b map[string]client.Result) bool {
 }
 
 func TestNoneExistingWithValidMachine(t *testing.T) {
-	conf, err := config.New("./config.yml")
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "01|failure",
+		MachineILog:       true,
+		MachineILogFolder: "test/fault/logs",
+	}
+	conf, err := config.New(opts.ConfigPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	machineRegex := "01|failure"
 	expected := map[string]client.Result{
 		"fa23-cs425-8701.cs.illinois.edu": {
 			Hostname: "fa23-cs425-8701.cs.illinois.edu",
@@ -25,11 +30,11 @@ func TestNoneExistingWithValidMachine(t *testing.T) {
 		},
 	}
 
-	testClient, err := client.New(conf, machineRegex)
+	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
-	args := []string{"-c", "PUT", "test/fault/logs/machine.i.log"}
+	args := []string{"-c", "PUT"}
 	output := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
@@ -38,18 +43,23 @@ func TestNoneExistingWithValidMachine(t *testing.T) {
 }
 
 func TestOnlyNoneExistingMachine(t *testing.T) {
-	conf, err := config.New("./config.yml")
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "failure",
+		MachineILog:       true,
+		MachineILogFolder: "test/fault/logs",
+	}
+	conf, err := config.New(opts.ConfigPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	machineRegex := "failure"
 	expected := map[string]client.Result{}
 
-	testClient, err := client.New(conf, machineRegex)
+	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
-	args := []string{"-c", "PUT", "test/fault/logs/machine.i.log"}
+	args := []string{"-c", "PUT"}
 	output := testClient.Run(args)
 
 	if isEqual(output, expected) == false {

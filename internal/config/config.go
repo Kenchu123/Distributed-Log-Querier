@@ -16,6 +16,7 @@ type Config struct {
 type Machine struct {
 	Hostname string `yaml:"hostname"`
 	Port     string `yaml:"port"`
+	ID       string `yaml:"id"`
 }
 
 // New reads the configuration file and returns the configuration

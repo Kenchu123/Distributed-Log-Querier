@@ -16,75 +16,75 @@ services:
     image: ds-grep
     hostname: fa23-cs425-8701.cs.illinois.edu
     volumes:
-      - ./logs/vm1.log:/app/logs/machine.i.log
-      - ./test/basic/logs/vm1.log:/app/test/basic/logs/machine.i.log
-      - ./test/fault/logs/vm1.log:/app/test/fault/logs/machine.i.log
-      - ./test/large/logs/vm1.log:/app/test/large/logs/machine.i.log
+      - ./logs/vm1.log:/app/logs/machine.1.log
+      - ./test/basic/logs/vm1.log:/app/test/basic/logs/machine.1.log
+      - ./test/fault/logs/vm1.log:/app/test/fault/logs/machine.1.log
+      - ./test/large/logs/vm1.log:/app/test/large/logs/machine.1.log
   m2:
     container_name: m2
     build: .
     image: ds-grep
     hostname: fa23-cs425-8702.cs.illinois.edu
     volumes:
-      - ./logs/vm2.log:/app/logs/machine.i.log
-      - ./test/basic/logs/vm2.log:/app/test/basic/logs/machine.i.log
-      - ./test/large/logs/vm2.log:/app/test/large/logs/machine.i.log
+      - ./logs/vm2.log:/app/logs/machine.2.log
+      - ./test/basic/logs/vm2.log:/app/test/basic/logs/machine.2.log
+      - ./test/large/logs/vm2.log:/app/test/large/logs/machine.2.log
   m3:
     container_name: m3
     build: .
     image: ds-grep
     hostname: fa23-cs425-8703.cs.illinois.edu
     volumes:
-      - ./logs/vm3.log:/app/logs/machine.i.log
-      - ./test/basic/logs/vm3.log:/app/test/basic/logs/machine.i.log
+      - ./logs/vm3.log:/app/logs/machine.3.log
+      - ./test/basic/logs/vm3.log:/app/test/basic/logs/machine.3.log
   m4:
     container_name: m4
     build: .
     image: ds-grep
     hostname: fa23-cs425-8704.cs.illinois.edu
     volumes:
-      - ./logs/vm4.log:/app/logs/machine.i.log
-      - ./test/basic/logs/vm4.log:/app/test/basic/logs/machine.i.log
+      - ./logs/vm4.log:/app/logs/machine.4.log
+      - ./test/basic/logs/vm4.log:/app/test/basic/logs/machine.4.log
   m5:
     container_name: m5
     build: .
     image: ds-grep
     hostname: fa23-cs425-8705.cs.illinois.edu
     volumes:
-      - ./logs/vm5.log:/app/logs/machine.i.log
-      - ./test/basic/logs/vm5.log:/app/test/basic/logs/machine.i.log
+      - ./logs/vm5.log:/app/logs/machine.5.log
+      - ./test/basic/logs/vm5.log:/app/test/basic/logs/machine.5.log
   m6:
     container_name: m6
     build: .
     image: ds-grep
     hostname: fa23-cs425-8706.cs.illinois.edu
     volumes:
-      - ./logs/vm6.log:/app/logs/machine.i.log
+      - ./logs/vm6.log:/app/logs/machine.6.log
   m7:
     container_name: m7
     build: .
     image: ds-grep
     hostname: fa23-cs425-8707.cs.illinois.edu
     volumes:
-      - ./logs/vm7.log:/app/logs/machine.i.log
+      - ./logs/vm7.log:/app/logs/machine.7.log
   m8:
     container_name: m8
     build: .
     image: ds-grep
     hostname: fa23-cs425-8708.cs.illinois.edu
     volumes:
-      - ./logs/vm8.log:/app/logs/machine.i.log
+      - ./logs/vm8.log:/app/logs/machine.8.log
   m9:
     container_name: m9
     build: .
     image: ds-grep
     hostname: fa23-cs425-8709.cs.illinois.edu
     volumes:
-      - ./logs/vm9.log:/app/logs/machine.i.log
+      - ./logs/vm9.log:/app/logs/machine.9.log
   m10:
     container_name: m10
     build: .
     image: ds-grep
     hostname: fa23-cs425-8710.cs.illinois.edu
     volumes:
-      - ./logs/vm10.log:/app/logs/machine.i.log
+      - ./logs/vm10.log:/app/logs/machine.10.log

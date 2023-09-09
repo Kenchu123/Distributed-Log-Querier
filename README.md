@@ -30,8 +30,10 @@ Set all machines' hostnames and ports in `.config.yml` file.
 machines:
   - hostname: "m1"
     port: "7122"
+    id: "1"
   - hostname: "m2"
     port: "7122"
+    id: "2"
 # ...
 ```
 
@@ -48,11 +50,18 @@ machines:
 ./bin/ds-grep [args]
 # Usage: ds-grep [DS_OPTION]... [OPTION]... PATTERN [FILE]...
 # Search for PATTERN in each FILE.
-# Example: ds-grep -i 'hello world' menu.h main.c
+
+# Example for grep logs/machine.{i}.log
+# ./bin/ds-grep --config=.dsgrep/config.yml --machine=.* --machine-ilog --machine-ilog-folder=logs -c GET
+
+# Example for grep logs/machine.log from machine [1-3]
+# ./bin/ds-grep --machine=[1-3] -c GET logs/machine.log
 
 # Distributed grep options:
 #     --config=PATH  path to config file (default ".dsgrep/config.yml")
 #     --machine=REGEX  regex to match machine names
+#     --machine-ilog  append machine.$i.log to grep file path
+#     --machine-ilog-folder=PATH  folder to store machine.$i.log (default "logs")
 #
 # Options:
 #   ... (same as grep)
@@ -97,7 +106,7 @@ docker compose down
 1. Clone this repo to each VM.
 2. Build this project on each VM.
 3. Start all `ds-grep-server` on each VM.
-4. Set `logs/machine.i.log` on each VM.
+4. Set `logs/machine.{i}.log` on each VM.
 
 #### Run tests
 
