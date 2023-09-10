@@ -58,6 +58,53 @@ func TestMachinesFrequent(t *testing.T) {
 	expected := map[string]client.Result{
 		"fa23-cs425-8701.cs.illinois.edu": {
 			Hostname: "fa23-cs425-8701.cs.illinois.edu",
+			Message:  "1000\n",
+		},
+		"fa23-cs425-8702.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8702.cs.illinois.edu",
+			Message:  "1000\n",
+		},
+		"fa23-cs425-8703.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8703.cs.illinois.edu",
+			Message:  "1000\n",
+		},
+		"fa23-cs425-8704.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8704.cs.illinois.edu",
+			Message:  "1000\n",
+		},
+		"fa23-cs425-8705.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8705.cs.illinois.edu",
+			Message:  "1000\n",
+		},
+	}
+
+	testClient, err := client.New(conf, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	args := []string{"-c", "/"}
+	output := testClient.Run(args)
+
+	if isEqual(output, expected) == false {
+		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+}
+
+func TestMachinesSomewhatFrequent(t *testing.T) {
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "0[1-5]",
+		MachineILog:       true,
+		MachineILogFolder: "test/basic/logs",
+	}
+
+	conf, err := config.New(opts.ConfigPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected := map[string]client.Result{
+		"fa23-cs425-8701.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8701.cs.illinois.edu",
 			Message:  "191\n",
 		},
 		"fa23-cs425-8702.cs.illinois.edu": {
@@ -175,6 +222,98 @@ func TestMachinesRegex(t *testing.T) {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "[I-J]"}
+	output := testClient.Run(args)
+
+	if isEqual(output, expected) == false {
+		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+}
+
+func TestOneLog(t *testing.T) {
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "0[1-5]",
+		MachineILog:       true,
+		MachineILogFolder: "test/basic/logs",
+	}
+	conf, err := config.New(opts.ConfigPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected := map[string]client.Result{
+		"fa23-cs425-8701.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8701.cs.illinois.edu",
+			Message:  "1\n",
+		},
+		"fa23-cs425-8702.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8702.cs.illinois.edu",
+			Message:  "0\n",
+		},
+		"fa23-cs425-8703.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8703.cs.illinois.edu",
+			Message:  "0\n",
+		},
+		"fa23-cs425-8704.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8704.cs.illinois.edu",
+			Message:  "0\n",
+		},
+		"fa23-cs425-8705.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8705.cs.illinois.edu",
+			Message:  "0\n",
+		},
+	}
+
+	testClient, err := client.New(conf, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	args := []string{"-c", "172.249.203.72"}
+	output := testClient.Run(args)
+
+	if isEqual(output, expected) == false {
+		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+}
+
+func TestSomeLog(t *testing.T) {
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "0[1-5]",
+		MachineILog:       true,
+		MachineILogFolder: "test/basic/logs",
+	}
+	conf, err := config.New(opts.ConfigPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected := map[string]client.Result{
+		"fa23-cs425-8701.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8701.cs.illinois.edu",
+			Message:  "1\n",
+		},
+		"fa23-cs425-8702.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8702.cs.illinois.edu",
+			Message:  "0\n",
+		},
+		"fa23-cs425-8703.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8703.cs.illinois.edu",
+			Message:  "1\n",
+		},
+		"fa23-cs425-8704.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8704.cs.illinois.edu",
+			Message:  "0\n",
+		},
+		"fa23-cs425-8705.cs.illinois.edu": {
+			Hostname: "fa23-cs425-8705.cs.illinois.edu",
+			Message:  "0\n",
+		},
+	}
+
+	testClient, err := client.New(conf, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	args := []string{"-c", "209.26.2"}
 	output := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
