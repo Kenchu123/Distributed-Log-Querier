@@ -106,7 +106,7 @@ docker compose down
 1. Clone this repo to each VM.
 2. Build this project on each VM.
 3. Start all `ds-grep-server` on each VM.
-4. Set `logs/machine.{i}.log` on each VM.
+4. Set `test/[basic,fault,large]/logs/machine.{i}.log` on each VM.
 
 #### Run tests
 
