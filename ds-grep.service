@@ -1,0 +1,12 @@
+[Unit]
+Description=DS-Grep Server for log-querying
+After=network-online.target
+
+[Service]
+User=ckchu2
+WorkingDirectory=/home/ckchu2
+ExecStart=ds-grep-server
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

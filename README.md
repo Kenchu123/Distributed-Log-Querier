@@ -43,8 +43,8 @@ machines:
 # Run server on each machine
 ./bin/ds-grep-server [args]
 # Usage of ds-grep-server:
-#   -config string
-#         path to config file (default ".dsgrep/config.yml")
+#   --port string
+#         port to listen on (default "7122")
 
 # Run client on any machine
 ./bin/ds-grep [args]
@@ -116,6 +116,16 @@ ssh [netid]@[vm-hostname]
 
 # Run tests
 $ go test [-v] [-count=1] ./...
+```
+
+## Run on boot for VMs
+
+```bash
+sudo cp ./bin/ds-grep-server /usr/local/bin
+sudo cp ds-grep-server.service /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable ds-grep-server.service
+sudo systemctl start ds-grep-server.service
 ```
 
 ## Contributor
