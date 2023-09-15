@@ -41,7 +41,7 @@ func New(conf *config.Config, opts *Options) (*Client, error) {
 }
 
 // Run runs the client
-func (c *Client) Run(args []string) map[string]Result {
+func (c *Client) Run(args []string) (map[string]Result, int) {
 	var wg = &sync.WaitGroup{}
 	result := make(chan Result)
 	for _, machine := range c.machines {
@@ -80,7 +80,32 @@ func (c *Client) Run(args []string) map[string]Result {
 			results[r.Hostname] = r
 		}
 	}
-	return results
+
+	totalLine := 0
+	// Count total number of log lines
+	for _, r := range results {
+		c := false
+		// Iterate through args to check if -c or -cE is present
+		for _, arg := range args {
+			if arg == "-c" || arg == "-cE" {
+				c = true
+				break
+			}
+		}
+		if (c) {
+			var num int
+			_, err := fmt.Sscan(r.Message, &num)
+			if err != nil {
+				logrus.Error(err)
+			}
+			totalLine += num
+			totalLine -= strings.Count(r.Message, "\n\n")
+		} else {
+			totalLine += strings.Count(r.Message, "\n")
+			totalLine -= strings.Count(r.Message, "\n\n")
+		}
+	}
+	return results, totalLine
 }
 
 func buildArgs(args []string, opts *Options, machine config.Machine) string {

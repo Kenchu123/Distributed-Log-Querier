@@ -39,10 +39,12 @@ func main() {
 	if err != nil {
 		logrus.Fatal(err)
 	}
-	results := client.Run(args)
+	results, totalLine := client.Run(args)
 
 	// Print result to terminal
 	for hostname, result := range results {
 		fmt.Printf("%s:%s\n", hostname, result.Message)
 	}
+	// Print total number of lines
+	fmt.Printf("Total number of lines: %d\n", totalLine)
 }
