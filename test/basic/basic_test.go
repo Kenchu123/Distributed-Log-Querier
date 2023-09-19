@@ -30,16 +30,19 @@ func TestOneMachine(t *testing.T) {
 			Message:  "191\n",
 		},
 	}
-
+	expectedTotalLine := 191
 	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "PUT"}
-	output := testClient.Run(args)
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 	}
 }
 
@@ -77,16 +80,19 @@ func TestMachinesFrequent(t *testing.T) {
 			Message:  "1000\n",
 		},
 	}
-
+	expectedTotalLine := 5000
 	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "/"}
-	output := testClient.Run(args)
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 	}
 }
 
@@ -124,16 +130,19 @@ func TestMachinesSomewhatFrequent(t *testing.T) {
 			Message:  "200\n",
 		},
 	}
-
+	expectedTotalLine := 1001
 	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "PUT"}
-	output := testClient.Run(args)
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 	}
 }
 
@@ -170,16 +179,19 @@ func TestMachinesInfrequent(t *testing.T) {
 			Message:  "28\n",
 		},
 	}
-
+	expectedTotalLine := 155
 	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "iPod"}
-	output := testClient.Run(args)
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 	}
 }
 
@@ -216,16 +228,20 @@ func TestMachinesRegex(t *testing.T) {
 			Message:  "446\n",
 		},
 	}
-
+	expectedTotalLine := 2313
 	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "[I-J]"}
-	output := testClient.Run(args)
+
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 	}
 }
 
@@ -262,16 +278,19 @@ func TestOneLog(t *testing.T) {
 			Message:  "0\n",
 		},
 	}
-
+	expectedTotalLine := 1
 	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "172.249.203.72"}
-	output := testClient.Run(args)
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 	}
 }
 
@@ -308,15 +327,43 @@ func TestSomeLog(t *testing.T) {
 			Message:  "0\n",
 		},
 	}
-
+	expectedTotalLine := 2
 	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "209.26.2"}
-	output := testClient.Run(args)
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
+	}
+}
+
+func TestMachinesPrintout(t *testing.T) {
+	opts := &client.Options{
+		ConfigPath:        "./config.yml",
+		MachineRegex:      "0[1-5]",
+		MachineILog:       true,
+		MachineILogFolder: "test/basic/logs",
+	}
+
+	conf, err := config.New(opts.ConfigPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	expectedTotalLine := 1001
+	testClient, err := client.New(conf, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	args := []string{"PUT"}
+	_, totalLine := testClient.Run(args)
+
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 	}
 }

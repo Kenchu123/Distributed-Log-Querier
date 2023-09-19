@@ -33,7 +33,7 @@ func TestParallelClient(t *testing.T) {
 			},
 		})
 	}
-
+	expectedTotalLine := 191
 	// Start testing
 	testClients := []*client.Client{}
 	for i := 0; i < CLIENT_NUM; i++ {
@@ -46,11 +46,13 @@ func TestParallelClient(t *testing.T) {
 
 	var wg = &sync.WaitGroup{}
 	outputChan := make(chan map[string]client.Result)
+	var totalLine int
 	for _, testClient := range testClients {
 		wg.Add(1)
 		go func(testClient *client.Client) {
 			defer wg.Done()
-			response := testClient.Run(args)
+			response, n := testClient.Run(args)
+			totalLine = n
 			outputChan <- response
 		}(testClient)
 	}
@@ -71,6 +73,9 @@ func TestParallelClient(t *testing.T) {
 	for i := 0; i < CLIENT_NUM; i++ {
 		if isEqual(output[i], expected[i]) == false {
 			t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+		}
+		if totalLine != expectedTotalLine {
+			t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 		}
 	}
 }

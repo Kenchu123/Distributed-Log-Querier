@@ -29,16 +29,19 @@ func TestNoneExistingWithValidMachine(t *testing.T) {
 			Message:  "191\n",
 		},
 	}
-
+	expectedTotalLine := 191
 	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "PUT"}
-	output := testClient.Run(args)
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 	}
 }
 
@@ -60,9 +63,14 @@ func TestOnlyNoneExistingMachine(t *testing.T) {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "PUT"}
-	output := testClient.Run(args)
+	expectedTotalLine := 0
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
 	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
+	}
+	
 }

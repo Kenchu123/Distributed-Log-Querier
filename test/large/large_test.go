@@ -33,15 +33,19 @@ func TestLargeFrequent(t *testing.T) {
 			Message:  "267938\n",
 		},
 	}
+	expectedTotalLine := 551491
 	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "/"}
-	output := testClient.Run(args)
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 	}
 }
 
@@ -66,16 +70,19 @@ func TestLargeSomewhatFrequent(t *testing.T) {
 			Message:  "53604\n",
 		},
 	}
-
+	expectedTotalLine := 110483
 	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "PUT"}
-	output := testClient.Run(args)
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 	}
 }
 
@@ -100,16 +107,19 @@ func TestLargeInfrequent(t *testing.T) {
 			Message:  "9018\n",
 		},
 	}
-
+	expectedTotalLine := 18366
 	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "iPod"}
-	output := testClient.Run(args)
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 	}
 }
 
@@ -134,15 +144,18 @@ func TestLargeRegex(t *testing.T) {
 			Message:  "151487\n",
 		},
 	}
-
+	expectedTotalLine := 315304
 	testClient, err := client.New(conf, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
 	args := []string{"-c", "[I-J]"}
-	output := testClient.Run(args)
+	output, totalLine := testClient.Run(args)
 
 	if isEqual(output, expected) == false {
 		t.Errorf("Output %+v is not equal to Expected %+v", output, expected)
+	}
+	if totalLine != expectedTotalLine {
+		t.Errorf("Output %c is not equal to Expected %c", totalLine, expectedTotalLine)
 	}
 }
