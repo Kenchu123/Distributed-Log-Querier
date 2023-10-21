@@ -15,7 +15,7 @@ See [MP Document](./docs/MP1.CS425.FA23.pdf)
 ### Build
 
 ```bash
-# Build project
+# Build the project
 git clone https://gitlab.engr.illinois.edu/ckchu2/cs425-mp1.git
 cd cs425-mp1
 go build -o bin/ds-grep cmd/ds-grep/main.go
