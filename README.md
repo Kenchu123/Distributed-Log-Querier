@@ -26,7 +26,7 @@ go build -o bin/ds-grep-server cmd/ds-grep-server/main.go
 
 ### Configuration
 
-Set all machines' hostnames and ports in `.config.yml` file.
+Set all machines' hostnames and ports in the `.config.yml` file.
 
 ```yaml
 machines:
