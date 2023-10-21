@@ -132,5 +132,5 @@ sudo systemctl start ds-grep-server.service
 
 ## Contributor
 
-- [Che-Kuang Chu (ckchu2)](https://gitlab.engr.illinois.edu/ckchu2)
-- [Jhih-Wei Lin (jhihwei2)](https://gitlab.engr.illinois.edu/jhihwei2)
+- [Che-Kuang Chu](https://github.com/Kenchu123)
+- [Jhih-Wei Lin](https://github.com/williamlin0825)
